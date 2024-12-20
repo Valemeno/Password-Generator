@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator - Step 2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Password Generator - Step 2</h1>
+    <form action="result.html" method="GET">
+      <label for="alphabetsNo">Number of Alphabets:</label>
+      <input type="number" id="alphabetsNo" name="alphabetsNo" min="0" required>
+      
+      <label for="digitsNo">Number of Digits:</label>
+      <input type="number" id="digitsNo" name="digitsNo" min="0" required>
+      
+      <label for="specialNo">Number of Special Characters:</label>
+      <input type="number" id="specialNo" name="specialNo" min="0" required>
+      
+      <input type="hidden" id="alphabets" name="alphabets">
+      <input type="hidden" id="digits" name="digits">
+      <input type="hidden" id="special" name="special">
+      
+      <button type="submit">Generate Password</button>
+    </form>
+  </div>
+
+  <script>
+    // Get data from the previous page (step 1)
+    const urlParams = new URLSearchParams(window.location.search);
+    const alphabets = urlParams.get('alphabets');
+    const digits = urlParams.get('digits');
+    const special = urlParams.get('special');
+    
+    // Pass the data to the hidden fields for submission to the next page (result.html)
+    document.getElementById('alphabets').value = alphabets;
+    document.getElementById('digits').value = digits;
+    document.getElementById('special').value = special;
+  </script>
+</body>
+</html>
