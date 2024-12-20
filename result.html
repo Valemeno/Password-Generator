@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generated Password</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Your Password</h1>
+    <div id="result">
+      <h2>Your Password:</h2>
+      <p id="password-output"></p>
+    </div>
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const alphabets = urlParams.get('alphabets').split('');
+    const digits = urlParams.get('digits').split('');
+    const special = urlParams.get('special').split('');
+    const alphabetsNo = parseInt(urlParams.get('alphabetsNo'), 10);
+    const digitsNo = parseInt(urlParams.get('digitsNo'), 10);
+    const specialNo = parseInt(urlParams.get('specialNo'), 10);
+
+    let passwordList = [];
+    for (let i = 0; i < alphabetsNo; i++) {
+      passwordList.push(alphabets[Math.floor(Math.random() * alphabets.length)]);
+    }
+    for (let i = 0; i < digitsNo; i++) {
+      passwordList.push(digits[Math.floor(Math.random() * digits.length)]);
+    }
+    for (let i = 0; i < specialNo; i++) {
+      passwordList.push(special[Math.floor(Math.random() * special.length)]);
+    }
+    passwordList = passwordList.sort(() => Math.random() - 0.5);
+
+    document.getElementById('password-output').textContent = passwordList.join('');
+  </script>
+</body>
+</html>
