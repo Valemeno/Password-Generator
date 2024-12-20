@@ -14,28 +14,52 @@
       <p id="password-output"></p>
     </div>
   </div>
+
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const alphabets = urlParams.get('alphabets').split('');
-    const digits = urlParams.get('digits').split('');
-    const special = urlParams.get('special').split('');
-    const alphabetsNo = parseInt(urlParams.get('alphabetsNo'), 10);
-    const digitsNo = parseInt(urlParams.get('digitsNo'), 10);
-    const specialNo = parseInt(urlParams.get('specialNo'), 10);
+    // Function to sanitize input to only allow specific characters
+    function sanitizeInput(input, allowedChars) {
+      return input.split('').filter(char => allowedChars.includes(char)).join('');
+    }
 
-    let passwordList = [];
-    for (let i = 0; i < alphabetsNo; i++) {
-      passwordList.push(alphabets[Math.floor(Math.random() * alphabets.length)]);
-    }
-    for (let i = 0; i < digitsNo; i++) {
-      passwordList.push(digits[Math.floor(Math.random() * digits.length)]);
-    }
-    for (let i = 0; i < specialNo; i++) {
-      passwordList.push(special[Math.floor(Math.random() * special.length)]);
-    }
-    passwordList = passwordList.sort(() => Math.random() - 0.5);
+    // Function to generate the password
+    function generatePassword() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const alphabets = sanitizeInput(urlParams.get('alphabets'), 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+      const digits = sanitizeInput(urlParams.get('digits'), '0123456789');
+      const special = sanitizeInput(urlParams.get('special'), '!@#$%^&*()-_=+[]{}|;:,.<>?/~');
+      
+      const alphabetsNo = parseInt(urlParams.get('alphabetsNo'), 10);
+      const digitsNo = parseInt(urlParams.get('digitsNo'), 10);
+      const specialNo = parseInt(urlParams.get('specialNo'), 10);
 
-    document.getElementById('password-output').textContent = passwordList.join('');
+      // Validation: Ensure inputs are valid
+      if (isNaN(alphabetsNo) || isNaN(digitsNo) || isNaN(specialNo) || alphabetsNo < 0 || digitsNo < 0 || specialNo < 0 || alphabetsNo + digitsNo + specialNo > 50) {
+        alert('Invalid input! Ensure values are positive and the total password length does not exceed 50 characters.');
+        return;
+      }
+
+      let passwordList = [];
+      
+      // Add random characters from the allowed lists
+      for (let i = 0; i < alphabetsNo; i++) {
+        passwordList.push(alphabets[Math.floor(Math.random() * alphabets.length)]);
+      }
+      for (let i = 0; i < digitsNo; i++) {
+        passwordList.push(digits[Math.floor(Math.random() * digits.length)]);
+      }
+      for (let i = 0; i < specialNo; i++) {
+        passwordList.push(special[Math.floor(Math.random() * special.length)]);
+      }
+
+      // Shuffle the password list to ensure randomness
+      passwordList = passwordList.sort(() => Math.random() - 0.5);
+
+      // Display the password
+      document.getElementById('password-output').textContent = passwordList.join('');
+    }
+
+    // Run the password generation function
+    generatePassword();
   </script>
 </body>
 </html>
